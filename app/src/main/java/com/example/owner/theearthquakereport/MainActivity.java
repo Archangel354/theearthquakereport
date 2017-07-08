@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-05-02&minfelt=50&minmagnitude=5";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,20 +29,9 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
         // thread.  when the result is received on the main UI thread, then update the UI.
         DownloadFilesTask task = new DownloadFilesTask();
         task.execute(USGS_REQUEST_URL);
-
-        // Get the list of earthquakes from QueryUtils
-        ArrayList<Earthquake> earthquakes = Utils.getArrList();
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-        // Create a new {@link CustomAdapter} of earthquakes
-        final EarthquakeAdapter earthquakeAdapter = new EarthquakeAdapter(MainActivity.this, earthquakes);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(earthquakeAdapter);
     }
+
+
 
     private class DownloadFilesTask extends AsyncTask<String, Void, Event> {
 
@@ -58,29 +49,31 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
         protected void onPostExecute(Event result) {
             // If there is no result, do nothing.
 
-            updateUi(result);
+            // Get the list of earthquakes from QueryUtils
+            ArrayList<Earthquake> earthquakes = Utils.getArrList();
+
+            // Find a reference to the {@link ListView} in the layout
+            ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+            // Create a new {@link CustomAdapter} of earthquakes
+            final EarthquakeAdapter earthquakeAdapter = new EarthquakeAdapter(MainActivity.this, earthquakes);
+
+            // Set the adapter on the {@link ListView} so the list can be populated in the user interface
+            earthquakeListView.setAdapter(earthquakeAdapter);
+            Log.i("LOG","...AND WE'RE DONE!!!!");
             if (result == null) {
                 return;
             }
 
         }
 
-        private void updateUi(Event earthquake) {
-            TextView titleTextView = (TextView) findViewById(R.id.title);
-//            titleTextView.setText(earthquake.title);
-
-            //TextView tsunamiTextView = (TextView) findViewById(R.id.number_of_people);
-            //tsunamiTextView.setText(getString(R.string.num_people_felt_it, earthquake.numOfPeople));
-
-            //TextView magnitudeTextView = (TextView) findViewById(R.id.perceived_magnitude);
-            //magnitudeTextView.setText(earthquake.perceivedStrength);
-            Log.i("LOG","...AND WE'RE DONE!!!!");
-        }
     }
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
         // TODO: Create a new loader for the given URL
+
+        return null;
     }
 
     @Override
