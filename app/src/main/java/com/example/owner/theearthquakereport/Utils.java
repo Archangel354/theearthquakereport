@@ -10,7 +10,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,9 +34,8 @@ public final class Utils {
     // Create an empty ArrayList that we can start adding earthquakes to
     static ArrayList<Earthquake> earthquakes = new ArrayList<>();
 
-    /**
-     * Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
-     */
+
+     //Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
     public static Event fetchEarthquakeData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
