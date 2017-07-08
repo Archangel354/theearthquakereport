@@ -1,18 +1,12 @@
 package com.example.owner.theearthquakereport;
 
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
+public class MainActivity extends AppCompatActivity {
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -28,18 +22,6 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
         DownloadFilesTask task = new DownloadFilesTask();
         task.execute(USGS_REQUEST_URL);
 
-        // Get the list of earthquakes from QueryUtils
-        ArrayList<Earthquake> earthquakes = Utils.getArrList();
-
-        // Find a reference to the {@link ListView} in the layout
-        ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-        // Create a new {@link CustomAdapter} of earthquakes
-        final EarthquakeAdapter earthquakeAdapter = new EarthquakeAdapter(MainActivity.this, earthquakes);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(earthquakeAdapter);
     }
 
     private class DownloadFilesTask extends AsyncTask<String, Void, Event> {
@@ -57,12 +39,10 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
         @Override
         protected void onPostExecute(Event result) {
             // If there is no result, do nothing.
-
-            updateUi(result);
             if (result == null) {
                 return;
             }
-
+            updateUi(result);
         }
 
         private void updateUi(Event earthquake) {
@@ -74,22 +54,6 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
 
             //TextView magnitudeTextView = (TextView) findViewById(R.id.perceived_magnitude);
             //magnitudeTextView.setText(earthquake.perceivedStrength);
-            Log.i("LOG","...AND WE'RE DONE!!!!");
         }
-    }
-
-    @Override
-    public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
-        // TODO: Create a new loader for the given URL
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
-        // TODO: Update the UI with the result
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<Earthquake>> loader) {
-        // TODO: Loader reset, so we can clear out our existing data.
     }
 }
