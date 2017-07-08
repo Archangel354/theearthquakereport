@@ -1,12 +1,16 @@
 package com.example.owner.theearthquakereport;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL =
@@ -24,20 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class DownloadFilesTask extends AsyncTask<String, Void, Event> {
+    private class DownloadFilesTask extends AsyncTask<String, Void, List> {
 
-        protected Event doInBackground(String... urls) {
+        protected List doInBackground(String... urls) {
             // Don't perform the request if there are no URLs, or the first URL is null.
             if (urls.length < 1 || urls[0] == null) {
                 return null;
             }
             // Perform the HTTP request for earthquake data and process the response.
-            Event result = Utils.fetchEarthquakeData(urls[0]);
+            List result = Utils.fetchEarthquakeData(urls[0]);
             Log.i("LOG","JSON string is: " + result);
             return result;            }
 
         @Override
-        protected void onPostExecute(Event result) {
+        protected void onPostExecute(List result) {
             // If there is no result, do nothing.
             if (result == null) {
                 return;
@@ -45,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
             updateUi(result);
         }
 
-        private void updateUi(Event earthquake) {
-            TextView titleTextView = (TextView) findViewById(R.id.title);
-//            titleTextView.setText(earthquake.title);
+        private void updateUi(List earthquake) {
+            TextView titleTextView = (TextView) findViewById(R.id.magnitude);
+            //titleTextView.setText(earthquake.magnitude);
 
             //TextView tsunamiTextView = (TextView) findViewById(R.id.number_of_people);
             //tsunamiTextView.setText(getString(R.string.num_people_felt_it, earthquake.numOfPeople));
@@ -55,5 +59,21 @@ public class MainActivity extends AppCompatActivity {
             //TextView magnitudeTextView = (TextView) findViewById(R.id.perceived_magnitude);
             //magnitudeTextView.setText(earthquake.perceivedStrength);
         }
+    }
+
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
+        // TODO: Create a new loader for the given URL
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        // TODO: Update the UI with the result
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        // TODO: Loader reset, so we can clear out our existing data.
     }
 }
