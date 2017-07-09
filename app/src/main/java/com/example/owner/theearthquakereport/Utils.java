@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Utility class with methods to help perform the HTTP request and
@@ -34,26 +35,37 @@ public final class Utils {
     // Create an empty ArrayList that we can start adding earthquakes to
     static ArrayList<Earthquake> earthquakes = new ArrayList<>();
 
+    /**
+            * Create a private constructor because no one should ever create a {@link Utils} object.
+     * This class is only meant to hold static variables and methods, which can be accessed
+     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+            */
+    private Utils() {
+    }
+
 
      //Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
-    public static Event fetchEarthquakeData(String requestUrl) {
-        // Create URL object
-        URL url = createUrl(requestUrl);
+     public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+         // Create URL object
+         URL url = createUrl(requestUrl);
+         Log.i(LOG_TAG, "TEST: Inside fetchEarthquakeData");
 
-        // Perform HTTP request to the URL and receive a JSON response back
-        String jsonResponse = null;
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error closing input stream", e);
-        }
 
-        // Extract relevant fields from the JSON response and create an {@link Event} object
-        Event earthquake = extractFeatureFromJson(jsonResponse);
+         // Perform HTTP request to the URL and receive a JSON response back
+         String jsonResponse = null;
+         try {
+             jsonResponse = makeHttpRequest(url);
+         } catch (IOException e) {
+             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+         }
 
-        // Return the {@link Event}
-        return earthquake;
-    }
+         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
+         List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
+
+         // Return the list of {@link Earthquake}s
+         return earthquakes;
+     }
+
 
     /**
      * Returns new URL object from the given string URL.
@@ -133,11 +145,14 @@ public final class Utils {
      * Return an {@link Event} object by parsing out information
      * about the first earthquake from the input earthquakeJSON string.
      */
-    private static Event extractFeatureFromJson(String earthquakeJSON) {
+    private static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(earthquakeJSON)) {
             return null;
         }
+
+        // Create an empty ArrayList that we can start adding earthquakes to
+        List<Earthquake> earthquakes = new ArrayList<>();
         try {
             JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
             JSONArray featureArray = baseJsonResponse.getJSONArray("features");
@@ -174,7 +189,9 @@ public final class Utils {
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
-        return null;
+
+        // RETURN THE LIST OF EARTHQUAKES
+        return earthquakes;
     }
 
     static String OffSetLocationCreator(String location){
@@ -204,7 +221,7 @@ public final class Utils {
         return city;
     }
 
-    //ArrayList<String> arrList = new ArrayList<String>();
+    ArrayList<String> arrList = new ArrayList<String>();
 
     public static ArrayList<Earthquake> getArrList() {
         return earthquakes;
