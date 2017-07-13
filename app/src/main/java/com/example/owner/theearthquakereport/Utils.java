@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Utility class with methods to help perform the HTTP request and
@@ -38,7 +39,7 @@ public final class Utils {
     /**
      * Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
      */
-    public static Event fetchEarthquakeData(String requestUrl) {
+    public static List fetchEarthquakeData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -51,7 +52,7 @@ public final class Utils {
         }
 
         // Extract relevant fields from the JSON response and create an {@link Event} object
-        Event earthquake = extractFeatureFromJson(jsonResponse);
+        List earthquake = extractFeatureFromJson(jsonResponse);
 
         // Return the {@link Event}
         return earthquake;
@@ -135,7 +136,7 @@ public final class Utils {
      * Return an {@link Event} object by parsing out information
      * about the first earthquake from the input earthquakeJSON string.
      */
-    private static Event extractFeatureFromJson(String earthquakeJSON) {
+    private static List extractFeatureFromJson(String earthquakeJSON) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(earthquakeJSON)) {
             return null;

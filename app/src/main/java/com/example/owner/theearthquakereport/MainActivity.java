@@ -33,20 +33,21 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
 
 
 
-    private class DownloadFilesTask extends AsyncTask<String, Void, Event> {
+    private class DownloadFilesTask extends AsyncTask<String, Void, List> {
 
-        protected Event doInBackground(String... urls) {
+        protected List doInBackground(String... urls) {
             // Don't perform the request if there are no URLs, or the first URL is null.
             if (urls.length < 1 || urls[0] == null) {
                 return null;
             }
             // Perform the HTTP request for earthquake data and process the response.
-            Event result = Utils.fetchEarthquakeData(urls[0]);
+            List result = Utils.fetchEarthquakeData(urls[0]);
             Log.i("LOG","JSON string is: " + result);
-            return result;            }
+            return result;
+        }
 
         @Override
-        protected void onPostExecute(Event result) {
+        protected void onPostExecute(List result) {
             // If there is no result, do nothing.
 
             // Get the list of earthquakes from QueryUtils
