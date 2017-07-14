@@ -55,6 +55,6 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
         // Loader reset, so we can clear out our existing data.
-        mAdapter.clear();
+       // mAdapter.clear();
     }
 }

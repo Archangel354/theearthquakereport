@@ -207,7 +207,7 @@ public final class Utils {
         return city;
     }
 
-    //ArrayList<String> arrList = new ArrayList<String>();
+    ArrayList<String> arrList = new ArrayList<String>();
 
     public static ArrayList<Earthquake> getArrList() {
         return earthquakes;
