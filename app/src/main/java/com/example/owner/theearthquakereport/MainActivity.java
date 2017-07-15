@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
         // TODO: Create a new loader for the given URL
+        return  null;
 
     }
 
