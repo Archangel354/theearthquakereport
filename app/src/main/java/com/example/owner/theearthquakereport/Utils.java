@@ -177,7 +177,7 @@ public final class Utils {
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
-        return null;
+        return earthquakes;
     }
 
     static String OffSetLocationCreator(String location){
