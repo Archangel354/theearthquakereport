@@ -40,6 +40,7 @@ public final class Utils {
      * Query the USGS dataset and return an {@link Event} object to represent a single earthquake.
      */
     public static List fetchEarthquakeData(String requestUrl) {
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
