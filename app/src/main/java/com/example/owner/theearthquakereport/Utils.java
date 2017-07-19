@@ -67,7 +67,7 @@ public final class Utils {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
-           // Log.e(LOG_TAG, "Error with creating URL ", e);
+           Log.e(LOG_TAG, "Error with creating URL ", e);
         }
         return url;
     }
